@@ -61,6 +61,7 @@ namespace Obi
         {
             public ObiActor actor;
             public int indexInActor;
+            public string gameObject;
 
             public ParticleInActor()
             {

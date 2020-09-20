@@ -19,7 +19,20 @@ public class BallStats : MonoBehaviour
     public int GetWeight() => _weight;
     public int GetHardness() => _hardness;
 
+    Vector3 _startLoc;
 
+    private void Awake()
+    {
+        _startLoc = this.transform.position;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+            Die();
+        if (Input.GetKeyDown(KeyCode.R))
+            ResetBall();
+    }
 
     public void SetBall(BallData ball)
     {
@@ -37,8 +50,10 @@ public class BallStats : MonoBehaviour
         return ObjectHitsStrength>_density;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int enemyStrength)
     {
+        //Not sure on how damage is supposed to work need to clarify 
+        int damage = Mathf.Clamp( enemyStrength- _density, 1, enemyStrength);
         _hardness -= damage;
         if (_hardness < 0)
             Die();
@@ -47,13 +62,20 @@ public class BallStats : MonoBehaviour
     public void Die()
     {
         Debug.LogWarning("You Died");
-        Destroy(this.gameObject);
+        this.GetComponent<MeshRenderer>().enabled = false;
+        BallController bc = this.GetComponent<BallController>();
+        bc.StopBall();
+        bc.enabled = false;
+
+
     }
 
-    //Dont know what this does
+    //Respawns the ball
     public void ResetBall()
     {
-        
+        this.GetComponent<MeshRenderer>().enabled = true;
+        this.GetComponent<BallController>().enabled = true;
+        this.transform.position = _startLoc;
     }
 
 }

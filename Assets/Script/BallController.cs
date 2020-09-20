@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using Obi;
 
 public class BallController : MonoBehaviour
 {
@@ -10,10 +11,9 @@ public class BallController : MonoBehaviour
     public eSelectionState _state;
 
     public Rigidbody _rb;
-    private int BallFireForce = 40;
+    private int BallFireForce = 200;
 
     public GameObject PREFAB;
-    public int distance = 1;
 
     private void Update()
     {
@@ -26,13 +26,15 @@ public class BallController : MonoBehaviour
         {
             TickSelected();
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+            StopBall();
     }
     private void TickSelected()
     {
         Vector3 point = GetPointUnderMouse();
 
         Vector3 lineAngle = (point - transform.position) *-1;
-        //Vector3 lineAngle = this.transform.position - point;
 
         // GameObject.Instantiate(PREFAB, point, Quaternion.identity);
 
@@ -74,7 +76,14 @@ public class BallController : MonoBehaviour
     {
         //Shoot the ball
         print("Shooting ball twards: " + direction);
-        _rb.AddForce(direction * BallFireForce, ForceMode.Impulse);
+        //_rb.AddForce(direction * BallFireForce, ForceMode.Impulse);
+        _rb.velocity = direction * BallFireForce;
         //_rb.AddForceAtPosition(lineAngle*10, this.transform.position, ForceMode.Acceleration);
+    }
+
+    public void StopBall()
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
     }
 }
