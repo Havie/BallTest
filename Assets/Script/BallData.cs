@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO connect this data to softbody data
+
 public class BallData : ScriptableObject
 {
     [SerializeField] int _density;
